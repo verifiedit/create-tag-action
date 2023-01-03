@@ -1,0 +1,18 @@
+name: 'Create Tag Action'
+description: 'Create Git tag on repository'
+branding:
+  icon: 'tag'
+  color: 'blue'
+inputs:
+  tag:
+    description: 'Tag to create.'
+    required: true
+  message:
+    description: 'Message for the tag'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.tag }}
