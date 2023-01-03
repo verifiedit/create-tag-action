@@ -28,4 +28,6 @@ jobs:
         with:
           tag: ${{ github.run_number }}
           message: Build ${{ github.run_number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
