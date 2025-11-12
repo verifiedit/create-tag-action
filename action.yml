@@ -12,7 +12,19 @@ inputs:
     required: true
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.tag }}
+  using: 'composite'
+  steps:
+    - name: Configure git
+      shell: bash
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "Create Tag Action"
+        git config --global --add safe.directory "${{ github.workspace }}"
+
+    - name: Create and push tag
+      shell: bash
+      run: |
+        echo "Creating tag ${{ inputs.tag }} with message '${{ inputs.message }}' as '${{ github.actor }}'"
+        git fetch origin --tags --quiet
+        git tag -a "${{ inputs.tag }}" -m "${{ inputs.message }}" "${{ github.sha }}" -f
+        git push --tags -f
