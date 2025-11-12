@@ -44,7 +44,6 @@ jobs:
           message: "Build ${{ github.run_number }}"
 ```
 
-Notes
+### Notes
 
 - The workflow above sets `permissions: contents: write` so the action can push tags back to the repository.
-- You do not need to set `GITHUB_TOKEN` manually; the runner provides `secrets.GITHUB_TOKEN` to the job. The action uses the job's default token when pushing.
