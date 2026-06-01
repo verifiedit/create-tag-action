@@ -1,6 +1,7 @@
 # CLAUDE.md
 
-Guidance for Claude Code when working in this repository. This file is self-contained — do not rely on `README.md`.
+Guidance for Claude Code when working in this repository. This file is self-contained (primary reference), but keep `README.md` usage examples in sync for consumers.
+
 
 ## Project
 
@@ -37,7 +38,7 @@ README.md          # Usage example for consumers
 - **PR reviewers**: `verifiedit/dev`.
 - **Tag versions explicitly.** Consumers pin via `@vX` or commit SHA — moving a major tag (`v2`) requires care.
 - **Inputs documented.** Every `inputs.*` entry has a `description` and, where useful, a `default`.
-- **No org-specific secrets baked in.** The action only uses the calling workflow's `GITHUB_TOKEN` (granted via `permissions: contents: write` in the consumer workflow).
+- **No org-specific secrets baked in.** The action relies on git authentication provided by the calling workflow (typically via `actions/checkout` using `GITHUB_TOKEN`, with `permissions: contents: write`).
 - **Force-push semantics.** This action force-pushes tags by design (`-f`). Consumers must accept that re-running clobbers existing tags of the same name.
 
 ## Releasing
@@ -48,7 +49,7 @@ README.md          # Usage example for consumers
 ## Things to avoid
 
 - Switching from composite to a JS or Docker action without updating consumers.
-- Adding non-shell steps (Node setup, container pulls) — this is intentionally a thin composite.
+- Logging input values that may contain secrets — the action currently echoes `tag`/`message` for debugging; if those inputs could ever contain sensitive data, remove/redact that logging.
 - Logging input values that may contain secrets — `tag` and `message` are not secrets today, but treat them carefully if that changes.
 - Removing the `safe.directory` git config — it's required when running on self-hosted runners with mounted workspaces.
 
